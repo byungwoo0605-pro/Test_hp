@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDIVITA — 프리미엄 메디컬센터</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0A1628;--navy-mid:#132240;--blue:#1A3A6B;--blue-mid:#2E5FA3;
+  --sky:#EBF2FC;--gold:#B8935A;--gold-light:#D4AA72;--white:#FFFFFF;
+  --off-white:#F8F9FC;--light:#F0F4FA;--border:#DDE4EF;--text:#1A1A2E;
+  --text-mid:#4A5568;--text-light:#8896B0;--red:#C0392B;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--text);background:var(--white);overflow-x:hidden}
+.top-banner{background:var(--navy);padding:9px 40px;display:flex;align-items:center;justify-content:space-between;}
+.top-banner-left{display:flex;gap:28px;}
+.top-banner-left a{font-size:0.72rem;color:rgba(255,255,255,0.55);text-decoration:none;font-weight:300;transition:color 0.2s;}
+.top-banner-left a:hover{color:var(--gold-light)}
+.top-banner-right{display:flex;align-items:center;gap:20px;}
+.top-banner-right a{font-size:0.72rem;color:rgba(255,255,255,0.55);text-decoration:none;font-weight:300;transition:color 0.2s;}
+.top-banner-right a:hover{color:white}
+.lang-btns{display:flex;gap:6px}
+.lang-btns a{font-size:0.65rem;padding:2px 8px;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.4);text-decoration:none;border-radius:2px;transition:all 0.2s;}
+.lang-btns a:hover,.lang-btns a.active{border-color:var(--gold);color:var(--gold);}
+nav{background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(10,22,40,0.06);}
+.nav-main{max-width:1300px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:72px;}
+.nav-logo{display:flex;flex-direction:column;text-decoration:none;gap:2px;}
+.nav-logo-en{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;letter-spacing:0.15em;color:var(--navy);line-height:1;}
+.nav-logo-ko{font-size:0.65rem;font-weight:300;letter-spacing:0.25em;color:var(--text-light);text-transform:uppercase;}
+.nav-links{display:flex;list-style:none;height:100%;}
+.nav-links>li{position:relative;height:100%;}
+.nav-links>li>a{display:flex;align-items:center;height:100%;padding:0 22px;font-size:0.88rem;font-weight:500;color:var(--text);text-decoration:none;transition:color 0.2s;white-space:nowrap;border-bottom:3px solid transparent;}
+.nav-links>li>a:hover{color:var(--blue-mid);border-bottom-color:var(--blue-mid)}
+.mega-dropdown{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:white;border:1px solid var(--border);border-top:3px solid var(--blue-mid);box-shadow:0 20px 60px rgba(10,22,40,0.12);min-width:200px;padding:8px 0;z-index:300;}
+.dept-menu:hover .mega-dropdown{display:block}
+.mega-dropdown a{display:flex;align-items:center;gap:10px;padding:11px 24px;font-size:0.84rem;color:var(--text-mid);text-decoration:none;font-weight:400;transition:all 0.2s;white-space:nowrap;}
+.mega-dropdown a:hover{background:var(--sky);color:var(--blue)}
+.mega-dropdown a .dept-dot{width:7px;height:7px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background 0.2s;}
+.mega-dropdown a:hover .dept-dot{background:var(--blue-mid)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-book-btn{background:var(--blue);color:white;border:none;padding:10px 22px;font-size:0.82rem;font-weight:500;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:background 0.2s;letter-spacing:0.02em;border-radius:3px;}
+.nav-book-btn:hover{background:var(--navy)}
+.nav-book-btn.gold{background:var(--gold)}
+.nav-book-btn.gold:hover{background:#9E7B45}
+.hero{position:relative;height:620px;overflow:hidden;}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 0.8s ease;}
+.slide.active{opacity:1}
+.slide-bg{position:absolute;inset:0;}
+.slide-1 .slide-bg{background:linear-gradient(110deg,#0A1628 0%,#132240 40%,#1A3A6B 100%);}
+.slide-2 .slide-bg{background:linear-gradient(110deg,#0d1f0f 0%,#1a3520 40%,#2d5a3a 100%);}
+.slide-3 .slide-bg{background:linear-gradient(110deg,#1a0a0a 0%,#2d1515 40%,#4a2020 100%);}
+.slide-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(10,22,40,0.9) 0%,rgba(10,22,40,0.3) 60%,transparent 100%);}
+.slide-content{position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:0 60px;height:100%;display:flex;align-items:center;}
+.slide-text{max-width:560px}
+.slide-tag{display:inline-block;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold-light);font-weight:300;border:1px solid rgba(212,170,114,0.4);padding:5px 14px;margin-bottom:22px;}
+.slide-text h1{font-family:'Noto Serif KR',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:400;color:white;line-height:1.3;margin-bottom:16px;}
+.slide-text h1 em{font-style:normal;color:var(--gold-light)}
+.slide-text p{font-size:0.9rem;line-height:1.8;color:rgba(255,255,255,0.65);font-weight:300;margin-bottom:36px;}
+.slide-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{display:inline-block;padding:13px 32px;background:var(--blue-mid);color:white;font-size:0.82rem;font-weight:500;text-decoration:none;transition:background 0.2s;border-radius:3px;}
+.btn-primary:hover{background:var(--blue)}
+.btn-ghost{display:inline-block;padding:13px 32px;border:1px solid rgba(255,255,255,0.4);color:rgba(255,255,255,0.8);font-size:0.82rem;font-weight:300;text-decoration:none;transition:all 0.2s;border-radius:3px;}
+.btn-ghost:hover{border-color:white;color:white}
+.slide-indicators{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;}
+.slide-dot{width:24px;height:3px;background:rgba(255,255,255,0.3);cursor:pointer;transition:all 0.3s;border:none;}
+.slide-dot.active{background:var(--gold);width:40px}
+.hero-deco{position:absolute;right:80px;top:50%;transform:translateY(-50%);width:400px;height:400px;border:1px solid rgba(255,255,255,0.06);border-radius:50%;pointer-events:none;z-index:1;}
+.hero-deco::after{content:'';position:absolute;inset:40px;border:1px solid rgba(184,147,90,0.1);border-radius:50%;}
+.quick-bar{background:var(--navy);padding:0 40px;}
+.quick-bar-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr 1px 1fr;gap:0;}
+.quick-item{padding:22px 32px;display:flex;align-items:center;gap:16px;text-decoration:none;transition:background 0.2s;cursor:pointer;}
+.quick-item:hover{background:rgba(255,255,255,0.05)}
+.quick-divider{background:rgba(255,255,255,0.08)}
+.quick-icon{width:42px;height:42px;flex-shrink:0;background:rgba(255,255,255,0.07);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.quick-text .q-label{font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);font-weight:300;text-transform:uppercase;display:block;margin-bottom:3px;}
+.quick-text .q-title{font-size:0.9rem;font-weight:500;color:white;}
+.quick-item.highlight .quick-icon{background:var(--gold)}
+.departments{background:var(--off-white);padding:80px 40px;}
+.section-header{max-width:1300px;margin:0 auto 52px;display:flex;align-items:flex-end;justify-content:space-between;}
+.section-eyebrow{font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--blue-mid);font-weight:300;margin-bottom:10px;display:block;}
+.section-title{font-family:'Noto Serif KR',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:400;color:var(--navy);line-height:1.3;}
+.section-title em{font-style:normal;color:var(--blue-mid)}
+.section-more{font-size:0.78rem;color:var(--text-light);text-decoration:none;display:flex;align-items:center;gap:6px;font-weight:300;padding-bottom:4px;border-bottom:1px solid var(--border);transition:all 0.2s;}
+.section-more:hover{color:var(--blue-mid);border-color:var(--blue-mid)}
+.dept-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+.dept-card{background:white;border:1px solid var(--border);overflow:hidden;transition:all 0.3s;cursor:pointer;text-decoration:none;display:block;border-radius:4px;}
+.dept-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(10,22,40,0.1);border-color:var(--blue-mid);}
+.dept-card-top{height:140px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.dept-ent .dept-card-top{background:linear-gradient(135deg,#EBF2FC 0%,#C8DEFA 100%)}
+.dept-internal .dept-card-top{background:linear-gradient(135deg,#EBF5EE 0%,#C5E4CF 100%)}
+.dept-checkup .dept-card-top{background:linear-gradient(135deg,#F5EBF0 0%,#E4C5D6 100%)}
+.dept-skin .dept-card-top{background:linear-gradient(135deg,#FDF5EB 0%,#F0D9C0 100%)}
+.dept-aging .dept-card-top{background:linear-gradient(135deg,#F0EBF5 0%,#D4C5E4 100%)}
+.dept-icon{font-size:3rem;position:relative;z-index:1}
+.dept-card-body{padding:20px 22px 24px}
+.dept-card h3{font-family:'Noto Serif KR',serif;font-size:1.05rem;font-weight:600;color:var(--navy);margin-bottom:8px;}
+.dept-card p{font-size:0.78rem;line-height:1.7;color:var(--text-mid);font-weight:300;margin-bottom:16px;}
+.dept-tags{display:flex;flex-wrap:wrap;gap:5px}
+.dept-tag{font-size:0.65rem;padding:3px 9px;background:var(--light);color:var(--text-mid);border-radius:20px;font-weight:400;}
+.dept-card-arrow{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-top:1px solid var(--border);font-size:0.72rem;color:var(--text-light);font-weight:300;}
+.dept-card:hover .dept-card-arrow{color:var(--blue-mid)}
+.programs{background:white;padding:80px 40px}
+.prog-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:24px;}
+.prog-card{border-radius:4px;overflow:hidden;position:relative;min-height:320px;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;text-decoration:none;}
+.prog-card-bg{position:absolute;inset:0;transition:transform 0.5s ease;}
+.prog-card:hover .prog-card-bg{transform:scale(1.04)}
+.prog-1 .prog-card-bg{background:linear-gradient(145deg,#0A1628 0%,#1A3A6B 60%,#2E5FA3 100%)}
+.prog-2 .prog-card-bg{background:linear-gradient(145deg,#0d1f0f 0%,#1a3520 60%,#2d5a3a 100%)}
+.prog-3 .prog-card-bg{background:linear-gradient(145deg,#1a0e2a 0%,#2d1545 60%,#4a2070 100%)}
+.prog-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,transparent 60%);}
+.prog-content{position:relative;z-index:2;padding:32px}
+.prog-badge{display:inline-block;margin-bottom:12px;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.2);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.8);padding:4px 12px;font-weight:300;}
+.prog-card h3{font-family:'Noto Serif KR',serif;font-size:1.3rem;font-weight:400;color:white;margin-bottom:8px;line-height:1.4;}
+.prog-card p{font-size:0.78rem;line-height:1.7;color:rgba(255,255,255,0.65);font-weight:300;margin-bottom:20px;}
+.prog-link{display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--gold-light);font-weight:300;}
+.prog-link::after{content:'→';transition:transform 0.2s}
+.prog-card:hover .prog-link::after{transform:translateX(4px)}
+.info-section{background:var(--off-white);padding:70px 40px;}
+.info-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+.info-box{background:white;border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.info-box-header{padding:20px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.info-box-header h3{font-size:0.95rem;font-weight:600;color:var(--navy);}
+.info-box-header a{font-size:0.72rem;color:var(--text-light);text-decoration:none;font-weight:300;transition:color 0.2s;}
+.info-box-header a:hover{color:var(--blue-mid)}
+.notice-list{padding:8px 0}
+.notice-item{display:flex;align-items:center;justify-content:space-between;padding:13px 28px;border-bottom:1px solid var(--border);text-decoration:none;transition:background 0.2s;gap:12px;}
+.notice-item:last-child{border-bottom:none}
+.notice-item:hover{background:var(--light)}
+.notice-badge{font-size:0.62rem;padding:2px 8px;border-radius:2px;font-weight:500;flex-shrink:0;background:var(--light);color:var(--text-mid);}
+.notice-badge.new{background:#EBF2FC;color:var(--blue)}
+.notice-badge.event{background:#FFF5EB;color:var(--gold)}
+.notice-title{flex:1;font-size:0.82rem;color:var(--text);font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.notice-date{font-size:0.72rem;color:var(--text-light);font-weight:300;flex-shrink:0;}
+.health-tips{padding:8px 0}
+.tip-item{display:flex;gap:16px;padding:14px 28px;border-bottom:1px solid var(--border);text-decoration:none;transition:background 0.2s;}
+.tip-item:last-child{border-bottom:none}
+.tip-item:hover{background:var(--light)}
+.tip-thumb{width:72px;height:72px;flex-shrink:0;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
+.tip-thumb.t1{background:linear-gradient(135deg,#EBF2FC,#C8DEFA)}
+.tip-thumb.t2{background:linear-gradient(135deg,#EBF5EE,#C5E4CF)}
+.tip-thumb.t3{background:linear-gradient(135deg,#FDF5EB,#F0D9C0)}
+.tip-dept{font-size:0.65rem;color:var(--blue-mid);font-weight:500;margin-bottom:4px;display:block;}
+.tip-title{font-size:0.85rem;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:4px;}
+.tip-date{font-size:0.7rem;color:var(--text-light);font-weight:300}
+.doctors{background:white;padding:80px 40px}
+.doctors-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.doctor-card{border:1px solid var(--border);border-radius:4px;overflow:hidden;transition:all 0.3s;cursor:pointer;}
+.doctor-card:hover{box-shadow:0 12px 40px rgba(10,22,40,0.1);border-color:var(--blue-mid);transform:translateY(-4px);}
+.doctor-photo{height:180px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.doc-1 .doctor-photo{background:linear-gradient(135deg,#C8DEFA,#8BB8F0)}
+.doc-2 .doctor-photo{background:linear-gradient(135deg,#C5E4CF,#8BC5A0)}
+.doc-3 .doctor-photo{background:linear-gradient(135deg,#F0D9C0,#D4AA72)}
+.doc-4 .doctor-photo{background:linear-gradient(135deg,#D4C5E4,#A88BC5)}
+.doctor-avatar{font-size:4rem;position:relative;z-index:1;}
+.doctor-info{padding:18px 20px}
+.doctor-dept{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue-mid);font-weight:500;margin-bottom:6px;display:block;}
+.doctor-name{font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:4px;}
+.doctor-title{font-size:0.75rem;color:var(--text-light);font-weight:300;margin-bottom:12px;line-height:1.5;}
+.doctor-spec{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px}
+.spec-tag{font-size:0.63rem;padding:2px 8px;background:var(--light);color:var(--text-mid);border-radius:20px;}
+.doctor-book-btn{width:100%;padding:9px;font-size:0.75rem;background:var(--sky);color:var(--blue);border:none;font-weight:500;cursor:pointer;transition:all 0.2s;border-radius:3px;}
+.doctor-book-btn:hover{background:var(--blue);color:white}
+.features{background:var(--navy);padding:60px 40px;}
+.features-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.feature-item{padding:32px 40px;border-right:1px solid rgba(255,255,255,0.08);display:flex;gap:18px;align-items:flex-start;}
+.feature-item:last-child{border-right:none}
+.feature-icon{font-size:1.8rem;flex-shrink:0;width:52px;height:52px;background:rgba(255,255,255,0.07);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.feature-text h4{font-size:0.95rem;font-weight:500;color:white;margin-bottom:6px;}
+.feature-text p{font-size:0.78rem;line-height:1.7;color:rgba(255,255,255,0.5);font-weight:300;}
+.location{background:var(--off-white);padding:80px 40px}
+.location-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:start;}
+.location-info h2{font-family:'Noto Serif KR',serif;font-size:1.8rem;font-weight:400;color:var(--navy);margin-bottom:32px;}
+.location-detail{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start;}
+.loc-icon{font-size:1.1rem;width:36px;flex-shrink:0;height:36px;background:var(--sky);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.loc-text h4{font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:3px}
+.loc-text p{font-size:0.8rem;color:var(--text-mid);font-weight:300;line-height:1.6}
+.hours-table{background:white;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-top:28px;}
+.hours-row{display:flex;padding:11px 18px;border-bottom:1px solid var(--border);font-size:0.8rem;gap:16px;}
+.hours-row:last-child{border-bottom:none}
+.hours-row .day{font-weight:500;color:var(--navy);width:80px;flex-shrink:0;}
+.hours-row .time{color:var(--text-mid);font-weight:300}
+.hours-row.closed .time{color:var(--red)}
+.map-placeholder{height:380px;background:var(--light);border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;overflow:hidden;position:relative;}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.5;}
+.map-roads{position:absolute;inset:0;overflow:hidden}
+.map-road{position:absolute;background:white;border:1px solid var(--border)}
+.map-road.h1{width:100%;height:24px;top:42%;left:0}
+.map-road.h2{width:100%;height:16px;top:65%;left:0}
+.map-road.v1{width:24px;height:100%;top:0;left:35%}
+.map-road.v2{width:16px;height:100%;top:0;left:60%}
+.map-pin{position:relative;z-index:2;background:var(--blue);color:white;padding:10px 20px;border-radius:3px;font-size:0.82rem;font-weight:500;box-shadow:0 4px 20px rgba(10,22,40,0.25);}
+.map-pin::after{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);border:8px solid transparent;border-top:8px solid var(--blue);border-bottom:none;}
+.map-caption{position:relative;z-index:2;font-size:0.72rem;color:var(--text-light);font-weight:300;margin-top:8px;}
+.map-directions{position:absolute;bottom:16px;right:16px;z-index:2;background:white;border:1px solid var(--border);padding:8px 14px;font-size:0.72rem;color:var(--blue-mid);text-decoration:none;border-radius:3px;font-weight:500;transition:all 0.2s;}
+.map-directions:hover{background:var(--blue);color:white;border-color:var(--blue)}
+footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:60px 40px 32px}
+.footer-top{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:60px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:32px;}
+.footer-brand .logo{display:block;margin-bottom:16px;}
+.footer-brand .logo-en{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;letter-spacing:0.15em;color:white;display:block;line-height:1;}
+.footer-brand .logo-ko{font-size:0.65rem;font-weight:300;letter-spacing:0.2em;color:rgba(255,255,255,0.3);}
+.footer-brand p{font-size:0.78rem;line-height:1.8;font-weight:300;color:rgba(255,255,255,0.4);max-width:220px;margin-bottom:20px;}
+.footer-contact .phone{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--gold-light);letter-spacing:0.05em;display:block;margin-bottom:4px;}
+.footer-contact .phone-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:300;}
+.footer-col h4{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-light);font-weight:400;margin-bottom:18px;}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{font-size:0.8rem;color:rgba(255,255,255,0.4);text-decoration:none;font-weight:300;transition:color 0.2s;}
+.footer-col ul li a:hover{color:rgba(255,255,255,0.8)}
+.footer-bottom{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.footer-bottom p{font-size:0.72rem;color:rgba(255,255,255,0.2);font-weight:300;}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:0.72rem;color:rgba(255,255,255,0.3);text-decoration:none;font-weight:300;transition:color 0.2s;}
+.footer-links a:hover{color:rgba(255,255,255,0.6)}
+.float-bar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);z-index:100;box-shadow:0 -4px 20px rgba(10,22,40,0.1);display:none;}
+.float-bar.show{display:block}
+.float-bar-inner{max-width:1300px;margin:0 auto;padding:12px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.float-bar-text{font-size:0.85rem;color:var(--navy);font-weight:500;}
+.float-bar-text span{color:var(--text-light);font-weight:300;font-size:0.78rem;margin-left:8px}
+.float-bar-btns{display:flex;gap:10px}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+.reveal-delay-4{transition-delay:0.4s}
+</style>
+</head>
+<body>
+<div class="top-banner">
+  <div class="top-banner-left">
+    <a href="#">공지사항</a>
+    <a href="#">이벤트</a>
+    <a href="#">건강정보</a>
+    <a href="#">비급여수가</a>
+  </div>
+  <div class="top-banner-right">
+    <a href="#">로그인</a>
+    <a href="#">회원가입</a>
+    <div class="lang-btns">
+      <a href="#" class="active">KOR</a>
+      <a href="#">ENG</a>
+      <a href="#">CHN</a>
+    </div>
+  </div>
+</div>
+<nav>
+  <div class="nav-main">
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-en">MEDIVITA</span>
+      <span class="nav-logo-ko">Premium Medical Center</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#">병원 소개</a></li>
+      <li class="dept-menu">
+        <a href="#">진료과 안내 ▾</a>
+        <div class="mega-dropdown">
+          <a href="#"><span class="dept-dot"></span>이비인후과</a>
+          <a href="#"><span class="dept-dot"></span>내과</a>
+          <a href="#"><span class="dept-dot"></span>검진센터</a>
+          <a href="#"><span class="dept-dot"></span>피부과</a>
+          <a href="#"><span class="dept-dot"></span>항노화 클리닉</a>
+        </div>
+      </li>
+      <li><a href="#">건강검진</a></li>
+      <li><a href="#">의료진 찾기</a></li>
+      <li><a href="#">건강정보</a></li>
+      <li><a href="#">오시는 길</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#" class="nav-book-btn">검진 예약</a>
+      <a href="#" class="nav-book-btn gold">진료 예약</a>
+    </div>
+  </div>
+</nav>
+<div class="hero">
+  <div class="slide slide-1 active">
+    <div class="slide-bg"></div><div class="slide-overlay"></div><div class="hero-deco"></div>
+    <div class="slide-content"><div class="slide-text">
+      <span class="slide-tag">항노화 클리닉</span>
+      <h1>건강한 노화를<br><em>과학으로 설계</em>합니다</h1>
+      <p>최첨단 의료 기술과 개인 맞춤형 케어 프로그램으로<br>더 건강하고 활기찬 삶을 지원합니다.</p>
+      <div class="slide-btns"><a href="#" class="btn-primary">자세히 보기</a><a href="#" class="btn-ghost">상담 신청</a></div>
+    </div></div>
+  </div>
+  <div class="slide slide-2">
+    <div class="slide-bg"></div><div class="slide-overlay"></div><div class="hero-deco"></div>
+    <div class="slide-content"><div class="slide-text">
+      <span class="slide-tag">프리미엄 검진센터</span>
+      <h1>당신만을 위한<br><em>맞춤 건강검진</em></h1>
+      <p>개인 전용 공간에서 최첨단 장비와<br>전문 의료진의 정밀 검진을 받으세요.</p>
+      <div class="slide-btns"><a href="#" class="btn-primary">검진 프로그램 보기</a><a href="#" class="btn-ghost">검진 예약</a></div>
+    </div></div>
+  </div>
+  <div class="slide slide-3">
+    <div class="slide-bg"></div><div class="slide-overlay"></div><div class="hero-deco"></div>
+    <div class="slide-content"><div class="slide-text">
+      <span class="slide-tag">피부과</span>
+      <h1>빛나는 피부,<br><em>과학적 솔루션</em></h1>
+      <p>피부과 전문의의 정밀 진단과<br>최신 레이저 시술로 건강한 피부를 찾아드립니다.</p>
+      <div class="slide-btns"><a href="#" class="btn-primary">시술 안내 보기</a><a href="#" class="btn-ghost">진료 예약</a></div>
+    </div></div>
+  </div>
+  <div class="slide-indicators">
+    <button class="slide-dot active" onclick="goSlide(0)"></button>
+    <button class="slide-dot" onclick="goSlide(1)"></button>
+    <button class="slide-dot" onclick="goSlide(2)"></button>
+  </div>
+</div>
+<div class="quick-bar">
+  <div class="quick-bar-inner">
+    <a href="#" class="quick-item highlight"><div class="quick-icon">🔍</div><div class="quick-text"><span class="q-label">Online Reservation</span><span class="q-title">건강검진 예약</span></div></a>
+    <div class="quick-divider"></div>
+    <a href="#" class="quick-item"><div class="quick-icon">📅</div><div class="quick-text"><span class="q-label">First Visit</span><span class="q-title">초진 예약</span></div></a>
+    <div class="quick-divider"></div>
+    <a href="#" class="quick-item"><div class="quick-icon">🔄</div><div class="quick-text"><span class="q-label">Return Visit</span><span class="q-title">재진 예약</span></div></a>
+    <div class="quick-divider"></div>
+    <a href="#" class="quick-item"><div class="quick-icon">💬</div><div class="quick-text"><span class="q-label">Online Inquiry</span><span class="q-title">온라인 상담</span></div></a>
+  </div>
+</div>
+<section class="departments" id="departments">
+  <div class="section-header reveal">
+    <div class="section-title-group"><span class="section-eyebrow">Our Departments</span><h2 class="section-title">전문 진료과 <em>안내</em></h2></div>
+    <a href="#" class="section-more">전체 진료과 보기 →</a>
+  </div>
+  <div class="dept-grid">
+    <a href="#" class="dept-card dept-ent reveal"><div class="dept-card-top"><span class="dept-icon">👂</span></div><div class="dept-card-body"><h3>이비인후과</h3><p>귀·코·목의 질환을 전문적으로 진단하고 치료합니다. 축농증, 이명, 편도 등 다양한 질환을 다룹니다.</p><div class="dept-tags"><span class="dept-tag">축농증</span><span class="dept-tag">이명</span><span class="dept-tag">중이염</span><span class="dept-tag">편도</span></div></div><div class="dept-card-arrow"><span>진료 안내</span><span>→</span></div></a>
+    <a href="#" class="dept-card dept-internal reveal reveal-delay-1"><div class="dept-card-top"><span class="dept-icon">🫀</span></div><div class="dept-card-body"><h3>내과</h3><p>소화기, 심혈관, 호흡기 등 내과 전반의 질환을 정밀하게 진단하고 체계적으로 관리합니다.</p><div class="dept-tags"><span class="dept-tag">소화기</span><span class="dept-tag">심혈관</span><span class="dept-tag">당뇨</span><span class="dept-tag">고혈압</span></div></div><div class="dept-card-arrow"><span>진료 안내</span><span>→</span></div></a>
+    <a href="#" class="dept-card dept-checkup reveal reveal-delay-2"><div class="dept-card-top"><span class="dept-icon">🩺</span></div><div class="dept-card-body"><h3>검진센터</h3><p>개인 맞춤형 프리미엄 건강검진. 독립 전용공간에서 체계적인 검진 프로그램을 제공합니다.</p><div class="dept-tags"><span class="dept-tag">종합검진</span><span class="dept-tag">암검진</span><span class="dept-tag">심혈관</span><span class="dept-tag">뇌정밀</span></div></div><div class="dept-card-arrow"><span>검진 안내</span><span>→</span></div></a>
+    <a href="#" class="dept-card dept-skin reveal reveal-delay-3"><div class="dept-card-top"><span class="dept-icon">✨</span></div><div class="dept-card-body"><h3>피부과</h3><p>전문의의 정밀 진단을 기반으로 한 개인 맞춤 피부 케어. 레이저·시술·의학적 스킨케어.</p><div class="dept-tags"><span class="dept-tag">레이저</span><span class="dept-tag">여드름</span><span class="dept-tag">보톡스</span><span class="dept-tag">필러</span></div></div><div class="dept-card-arrow"><span>진료 안내</span><span>→</span></div></a>
+    <a href="#" class="dept-card dept-aging reveal reveal-delay-4"><div class="dept-card-top"><span class="dept-icon">🌿</span></div><div class="dept-card-body"><h3>항노화 클리닉</h3><p>과학적 근거의 항노화 프로그램. 호르몬 관리, 세포치료, 통합의학으로 활력을 되찾습니다.</p><div class="dept-tags"><span class="dept-tag">호르몬</span><span class="dept-tag">세포치료</span><span class="dept-tag">면역</span><span class="dept-tag">영양</span></div></div><div class="dept-card-arrow"><span>프로그램 보기</span><span>→</span></div></a>
+  </div>
+</section>
+<section class="programs">
+  <div class="section-header reveal" style="max-width:1300px;margin:0 auto 40px">
+    <div class="section-title-group"><span class="section-eyebrow">Premium Health Checkup</span><h2 class="section-title">프리미엄 <em>건강검진</em></h2></div>
+    <a href="#" class="section-more">전체 프로그램 보기 →</a>
+  </div>
+  <div class="prog-grid">
+    <a href="#" class="prog-card prog-1 reveal"><div class="prog-card-bg"></div><div class="prog-overlay"></div><div class="prog-content"><span class="prog-badge">Premium</span><h3>종합 정밀검진<br>프로그램</h3><p>전신의 건강 상태를 정밀 검사하는 풀패키지 프로그램. 최첨단 장비와 다학제 전문의 팀이 함께합니다.</p><span class="prog-link">자세히 보기</span></div></a>
+    <a href="#" class="prog-card prog-2 reveal reveal-delay-1"><div class="prog-card-bg"></div><div class="prog-overlay"></div><div class="prog-content"><span class="prog-badge">Specialty</span><h3>암 정밀<br>특화검진</h3><p>주요 암을 조기 발견하는 특화 검진 프로그램. 위암, 대장암, 폐암, 간암 등.</p><span class="prog-link">자세히 보기</span></div></a>
+    <a href="#" class="prog-card prog-3 reveal reveal-delay-2"><div class="prog-card-bg"></div><div class="prog-overlay"></div><div class="prog-content"><span class="prog-badge">Executive</span><h3>심혈관·뇌<br>정밀검진</h3><p>뇌졸중, 심근경색 등 치명적 질환을 사전에 파악하는 정밀 검진 패키지.</p><span class="prog-link">자세히 보기</span></div></a>
+  </div>
+</section>
+<section class="info-section">
+  <div class="info-inner">
+    <div class="info-box reveal">
+      <div class="info-box-header"><h3>공지사항 · 이벤트</h3><a href="#">+ 더보기</a></div>
+      <div class="notice-list">
+        <a href="#" class="notice-item"><span class="notice-badge new">공지</span><span class="notice-title">2026년 4월 진료 일정 안내 — 교수별 진료 일정</span><span class="notice-date">2026.03.28</span></a>
+        <a href="#" class="notice-item"><span class="notice-badge event">이벤트</span><span class="notice-title">봄 맞이 피부 집중 케어 프로모션 — 4월 한정</span><span class="notice-date">2026.03.25</span></a>
+        <a href="#" class="notice-item"><span class="notice-badge new">공지</span><span class="notice-title">항노화 클리닉 신규 세포치료 프로그램 도입 안내</span><span class="notice-date">2026.03.20</span></a>
+        <a href="#" class="notice-item"><span class="notice-badge event">이벤트</span><span class="notice-title">종합검진 얼리버드 특가 — 5월 예약 한정 혜택</span><span class="notice-date">2026.03.15</span></a>
+        <a href="#" class="notice-item"><span class="notice-badge">안내</span><span class="notice-title">건강검진 결과 조회 앱 업데이트 안내 (v3.2)</span><span class="notice-date">2026.03.10</span></a>
+      </div>
+    </div>
+    <div class="info-box reveal reveal-delay-1">
+      <div class="info-box-header"><h3>건강 정보</h3><a href="#">+ 더보기</a></div>
+      <div class="health-tips">
+        <a href="#" class="tip-item"><div class="tip-thumb t1">👃</div><div class="tip-text"><span class="tip-dept">이비인후과</span><div class="tip-title">봄철 알레르기 비염, 이렇게 관리하세요</div><span class="tip-date">2026.04.01</span></div></a>
+        <a href="#" class="tip-item"><div class="tip-thumb t2">🩺</div><div class="tip-text"><span class="tip-dept">내과</span><div class="tip-title">콜레스테롤 수치, 정확히 알고 관리하기</div><span class="tip-date">2026.03.28</span></div></a>
+        <a href="#" class="tip-item"><div class="tip-thumb t3">✨</div><div class="tip-text"><span class="tip-dept">피부과</span><div class="tip-title">자외선 차단제 올바른 사용법 — 봄 피부 관리</div><span class="tip-date">2026.03.24</span></div></a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="doctors">
+  <div class="section-header reveal" style="max-width:1300px;margin:0 auto 40px">
+    <div class="section-title-group"><span class="section-eyebrow">Our Medical Team</span><h2 class="section-title">전문 <em>의료진</em></h2></div>
+    <a href="#" class="section-more">전체 의료진 보기 →</a>
+  </div>
+  <div class="doctors-grid">
+    <div class="doctor-card doc-1 reveal"><div class="doctor-photo"><span class="doctor-avatar">👨‍⚕️</span></div><div class="doctor-info"><span class="doctor-dept">이비인후과</span><div class="doctor-name">김민준 원장</div><div class="doctor-title">서울대학교 의과대학 졸업<br>이비인후과 전문의</div><div class="doctor-spec"><span class="spec-tag">비부비동</span><span class="spec-tag">두경부</span><span class="spec-tag">알레르기</span></div><button class="doctor-book-btn">진료 예약하기</button></div></div>
+    <div class="doctor-card doc-2 reveal reveal-delay-1"><div class="doctor-photo"><span class="doctor-avatar">👩‍⚕️</span></div><div class="doctor-info"><span class="doctor-dept">내과</span><div class="doctor-name">이서연 원장</div><div class="doctor-title">연세대학교 의과대학 졸업<br>내과 전문의</div><div class="doctor-spec"><span class="spec-tag">심혈관</span><span class="spec-tag">소화기</span><span class="spec-tag">당뇨</span></div><button class="doctor-book-btn">진료 예약하기</button></div></div>
+    <div class="doctor-card doc-3 reveal reveal-delay-2"><div class="doctor-photo"><span class="doctor-avatar">👨‍⚕️</span></div><div class="doctor-info"><span class="doctor-dept">피부과</span><div class="doctor-name">박지훈 원장</div><div class="doctor-title">고려대학교 의과대학 졸업<br>피부과 전문의</div><div class="doctor-spec"><span class="spec-tag">레이저</span><span class="spec-tag">여드름</span><span class="spec-tag">색소</span></div><button class="doctor-book-btn">진료 예약하기</button></div></div>
+    <div class="doctor-card doc-4 reveal reveal-delay-3"><div class="doctor-photo"><span class="doctor-avatar">👩‍⚕️</span></div><div class="doctor-info"><span class="doctor-dept">항노화 클리닉</span><div class="doctor-name">최유진 원장</div><div class="doctor-title">성균관대학교 의과대학 졸업<br>항노화 전문의</div><div class="doctor-spec"><span class="spec-tag">호르몬</span><span class="spec-tag">면역</span><span class="spec-tag">세포치료</span></div><button class="doctor-book-btn">진료 예약하기</button></div></div>
+  </div>
+</section>
+<div class="features">
+  <div class="features-inner">
+    <div class="feature-item reveal"><div class="feature-icon">🏆</div><div class="feature-text"><h4>최상위 의료 수준</h4><p>각 분야 최고 전문의와 최첨단 의료 장비로 국내 최고 수준의 의료 서비스를 제공합니다.</p></div></div>
+    <div class="feature-item reveal reveal-delay-1"><div class="feature-icon">🎯</div><div class="feature-text"><h4>개인 맞춤 케어</h4><p>표준화된 치료가 아닌, 개인의 유전·환경·생활 습관을 분석한 완전 맞춤형 의료를 제공합니다.</p></div></div>
+    <div class="feature-item reveal reveal-delay-2"><div class="feature-icon">🔬</div><div class="feature-text"><h4>첨단 진단 장비</h4><p>MRI, PET-CT, 3D 내시경 등 국내 최신 진단 장비를 갖춘 첨단 검진 시스템을 운영합니다.</p></div></div>
+    <div class="feature-item reveal reveal-delay-3"><div class="feature-icon">🤝</div><div class="feature-text"><h4>원스톱 토탈 케어</h4><p>검진에서 치료, 사후 관리까지 한 곳에서 연속적인 헬스케어 서비스를 받으실 수 있습니다.</p></div></div>
+  </div>
+</div>
+<section class="location" id="location">
+  <div class="location-inner">
+    <div class="location-info reveal">
+      <h2>오시는 길</h2>
+      <div class="location-detail"><div class="loc-icon">📍</div><div class="loc-text"><h4>주소</h4><p>서울특별시 강남구 청담동 000-0<br>MEDIVITA 빌딩 2·3·4층</p></div></div>
+      <div class="location-detail"><div class="loc-icon">🚇</div><div class="loc-text"><h4>지하철</h4><p>7호선 청담역 2번 출구 도보 5분<br>분당선 압구정로데오역 5번 출구 도보 7분</p></div></div>
+      <div class="location-detail"><div class="loc-icon">📞</div><div class="loc-text"><h4>대표전화</h4><p>진료센터: 02-XXXX-XXXX<br>검진센터: 02-XXXX-XXXX</p></div></div>
+      <div class="hours-table">
+        <div class="hours-row"><span class="day">평일</span><span class="time">08:30 — 17:30 (점심 12:30 — 13:30)</span></div>
+        <div class="hours-row"><span class="day">토요일</span><span class="time">08:30 — 12:30</span></div>
+        <div class="hours-row closed"><span class="day">일요일·공휴일</span><span class="time">휴진</span></div>
+      </div>
+    </div>
+    <div class="map-placeholder reveal reveal-delay-1">
+      <div class="map-grid"></div>
+      <div class="map-roads"><div class="map-road h1"></div><div class="map-road h2"></div><div class="map-road v1"></div><div class="map-road v2"></div></div>
+      <div class="map-pin">📍 MEDIVITA 메디컬센터</div>
+      <div class="map-caption">지도를 클릭하여 길찾기</div>
+      <a href="#" class="map-directions">카카오맵으로 보기 →</a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-en">MEDIVITA</span><span class="logo-ko">Premium Medical Center</span></span>
+      <p>최고의 의료진과 첨단 기술로 당신의 건강한 삶을 위한 최선의 의료를 제공합니다.</p>
+      <div class="footer-contact"><span class="phone">02-XXXX-XXXX</span><span class="phone-label">진료 대표번호</span></div>
+    </div>
+    <div class="footer-col"><h4>진료과</h4><ul><li><a href="#">이비인후과</a></li><li><a href="#">내과</a></li><li><a href="#">검진센터</a></li><li><a href="#">피부과</a></li><li><a href="#">항노화 클리닉</a></li></ul></div>
+    <div class="footer-col"><h4>예약·상담</h4><ul><li><a href="#">검진 예약</a></li><li><a href="#">초진 예약</a></li><li><a href="#">재진 예약</a></li><li><a href="#">온라인 상담</a></li><li><a href="#">예약 조회</a></li></ul></div>
+    <div class="footer-col"><h4>병원 안내</h4><ul><li><a href="#">병원 소개</a></li><li><a href="#">의료진 소개</a></li><li><a href="#">시설 안내</a></li><li><a href="#">비급여 수가</a></li><li><a href="#">고객의 소리</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 MEDIVITA 메디컬센터. All rights reserved. 사업자등록번호 XXX-XX-XXXXX | 대표: 홍길동 | 서울특별시 강남구 청담동</p>
+    <div class="footer-links"><a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">이메일수집거부</a><a href="#">사이트맵</a></div>
+  </div>
+</footer>
+<div class="float-bar" id="floatBar">
+  <div class="float-bar-inner">
+    <div class="float-bar-text">MEDIVITA 메디컬센터<span>지금 바로 예약하세요</span></div>
+    <div class="float-bar-btns"><a href="#" class="nav-book-btn">검진 예약</a><a href="#" class="nav-book-btn gold">진료 예약</a></div>
+  </div>
+</div>
+<script>
+let current=0;
+const slides=document.querySelectorAll('.slide');
+const dots=document.querySelectorAll('.slide-dot');
+function goSlide(n){slides[current].classList.remove('active');dots[current].classList.remove('active');current=n;slides[current].classList.add('active');dots[current].classList.add('active');}
+setInterval(()=>goSlide((current+1)%slides.length),5000);
+window.addEventListener('scroll',()=>{document.getElementById('floatBar').classList.toggle('show',window.scrollY>500);});
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
