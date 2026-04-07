@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내과 클리닉 상세 — MEDIVITA</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0A1628;--blue:#1A3A6B;--blue-mid:#2E5FA3;
+  --sky:#EBF2FC;--gold:#B8935A;--gold-light:#D4AA72;
+  --teal:#0D7377;--teal-light:#E0F5F5;
+  --white:#FFFFFF;--off-white:#F8F9FC;--light:#F0F4FA;
+  --border:#DDE4EF;--text:#1A1A2E;--text-mid:#4A5568;--text-light:#8896B0;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--text);background:var(--white);overflow-x:hidden}
+
+/* NAV */
+nav{background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(10,22,40,0.07);}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.nav-back{display:flex;align-items:center;gap:8px;text-decoration:none;font-size:0.8rem;color:var(--text-mid);font-weight:300;transition:color 0.2s;}
+.nav-back:hover{color:var(--teal)}
+.nav-back .arrow{font-size:1rem;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;letter-spacing:0.15em;color:var(--navy);text-decoration:none;}
+.nav-book{background:var(--gold);color:white;padding:8px 18px;font-size:0.75rem;font-weight:500;text-decoration:none;border-radius:3px;transition:background 0.2s;}
+.nav-book:hover{background:#9E7B45}
+
+/* HERO */
+.clinic-hero{
+  padding:60px 24px 52px;
+  position:relative;overflow:hidden;
+}
+.hero-bg{position:absolute;inset:0;z-index:0;}
+.hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;}
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:20px;}
+.breadcrumb a{font-size:0.7rem;color:rgba(255,255,255,0.5);text-decoration:none;font-weight:300;}
+.breadcrumb span{font-size:0.7rem;color:rgba(255,255,255,0.3);font-weight:300;}
+.breadcrumb .current{color:rgba(255,255,255,0.8)}
+.clinic-tag{display:inline-block;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;border:1px solid rgba(212,170,114,0.5);color:var(--gold-light);padding:4px 12px;margin-bottom:16px;font-weight:300;}
+.clinic-hero h1{font-family:'Noto Serif KR',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:400;color:white;line-height:1.3;margin-bottom:12px;}
+.clinic-hero h1 em{font-style:normal;color:var(--gold-light)}
+.clinic-hero .subtitle{font-size:0.9rem;color:rgba(255,255,255,0.65);font-weight:300;font-style:italic;line-height:1.6;max-width:560px;}
+.hero-badge{
+  position:absolute;right:60px;top:50%;transform:translateY(-50%);
+  width:120px;height:120px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
+  font-size:3rem;
+}
+
+/* MAIN CONTENT */
+.clinic-main{max-width:1100px;margin:0 auto;padding:56px 24px;display:grid;grid-template-columns:1fr;gap:40px;}
+@media(min-width:768px){.clinic-main{grid-template-columns:1fr 340px;gap:52px;}}
+
+/* 본문 */
+.clinic-body{}
+.body-section{margin-bottom:40px;}
+.body-section h2{
+  font-family:'Noto Serif KR',serif;
+  font-size:1.25rem;font-weight:400;color:var(--navy);
+  margin-bottom:16px;padding-bottom:12px;
+  border-bottom:2px solid var(--teal);display:inline-block;
+}
+.body-section p{
+  font-size:0.88rem;line-height:1.95;color:var(--text-mid);
+  font-weight:300;margin-bottom:14px;
+}
+.body-section p strong{font-weight:500;color:var(--text);}
+
+/* 대상/증상 태그 */
+.target-grid{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;}
+.target-chip{
+  padding:6px 14px;border-radius:4px;
+  font-size:0.78rem;font-weight:400;
+  background:var(--teal-light);color:var(--teal);
+  border:1px solid rgba(13,115,119,0.2);
+}
+
+/* 치료/검사 리스트 */
+.treatment-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+@media(max-width:500px){.treatment-list{grid-template-columns:1fr;}}
+.treatment-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 14px;background:var(--off-white);border-radius:4px;
+  border:1px solid var(--border);
+}
+.treatment-item .t-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.treatment-item .t-text{font-size:0.78rem;color:var(--text);font-weight:400;line-height:1.5;}
+.treatment-item .t-text small{display:block;font-size:0.68rem;color:var(--text-light);font-weight:300;margin-top:2px;}
+
+/* 프로세스 */
+.process-steps{display:flex;flex-direction:column;gap:0;margin:16px 0;}
+.process-step{
+  display:flex;align-items:flex-start;gap:16px;padding:14px 0;
+  border-bottom:1px solid var(--border);
+}
+.process-step:last-child{border-bottom:none}
+.step-num{
+  width:32px;height:32px;flex-shrink:0;border-radius:50%;
+  background:var(--teal);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.78rem;font-weight:500;margin-top:2px;
+}
+.step-body h4{font-size:0.85rem;font-weight:500;color:var(--navy);margin-bottom:4px;}
+.step-body p{font-size:0.78rem;color:var(--text-mid);font-weight:300;line-height:1.6;}
+
+/* 사이드바 */
+.clinic-sidebar{}
+.sidebar-card{
+  background:var(--off-white);border:1px solid var(--border);
+  border-radius:6px;overflow:hidden;margin-bottom:16px;
+  position:sticky;top:76px;
+}
+.sidebar-card-header{
+  padding:16px 20px;background:var(--navy);
+  display:flex;align-items:center;gap:10px;
+}
+.sidebar-card-header .s-icon{font-size:1.2rem;}
+.sidebar-card-header h3{font-size:0.9rem;font-weight:500;color:white;}
+.sidebar-card-header p{font-size:0.7rem;color:rgba(255,255,255,0.5);font-weight:300;}
+.sidebar-body{padding:20px;}
+.sidebar-info-row{
+  display:flex;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--border);align-items:flex-start;
+}
+.sidebar-info-row:last-child{border-bottom:none}
+.sidebar-info-row .si-label{
+  font-size:0.68rem;color:var(--text-light);font-weight:300;
+  width:52px;flex-shrink:0;padding-top:2px;
+}
+.sidebar-info-row .si-value{font-size:0.8rem;color:var(--text);font-weight:400;line-height:1.5;}
+
+/* 예약/문의 버튼 */
+.sidebar-btns{padding:0 20px 20px;display:flex;flex-direction:column;gap:10px;}
+.btn-reserve{
+  display:block;text-align:center;padding:14px;
+  background:var(--teal);color:white;text-decoration:none;
+  font-size:0.85rem;font-weight:500;border-radius:4px;
+  transition:background 0.2s;border:none;cursor:pointer;width:100%;
+}
+.btn-reserve:hover{background:#0A5E62}
+.btn-inquiry{
+  display:block;text-align:center;padding:13px;
+  background:white;color:var(--teal);text-decoration:none;
+  font-size:0.85rem;font-weight:500;border-radius:4px;
+  border:1.5px solid var(--teal);transition:all 0.2s;cursor:pointer;width:100%;
+}
+.btn-inquiry:hover{background:var(--teal-light)}
+.btn-call{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px;background:var(--off-white);color:var(--navy);
+  text-decoration:none;font-size:0.82rem;font-weight:500;border-radius:4px;
+  border:1px solid var(--border);transition:all 0.2s;
+}
+.btn-call:hover{border-color:var(--navy)}
+
+/* 주의사항 */
+.notice-box{
+  background:#FFFBF0;border:1px solid #F0D9A0;border-radius:4px;
+  padding:16px 18px;margin-top:16px;
+}
+.notice-box h4{font-size:0.78rem;font-weight:500;color:#8B6914;margin-bottom:8px;}
+.notice-box ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.notice-box ul li{font-size:0.75rem;color:#7A5F10;font-weight:300;line-height:1.5;padding-left:14px;position:relative;}
+.notice-box ul li::before{content:'·';position:absolute;left:0;}
+
+/* 관련 클리닉 */
+.related-clinics{margin-top:40px;padding-top:40px;border-top:1px solid var(--border);}
+.related-clinics h3{font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:400;color:var(--navy);margin-bottom:20px;}
+.related-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+@media(min-width:768px){.related-grid{grid-template-columns:repeat(4,1fr);}}
+.related-card{
+  padding:16px;border:1px solid var(--border);border-radius:4px;
+  text-decoration:none;transition:all 0.2s;background:white;
+  display:block;
+}
+.related-card:hover{border-color:var(--teal);transform:translateY(-2px);}
+.related-card .r-icon{font-size:1.6rem;margin-bottom:8px;display:block;}
+.related-card .r-name{font-size:0.8rem;font-weight:500;color:var(--navy);margin-bottom:4px;}
+.related-card .r-desc{font-size:0.68rem;color:var(--text-light);font-weight:300;line-height:1.4;}
+
+/* MODAL */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.5);z-index:500;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.show{display:flex;}
+.modal{
+  background:white;border-radius:8px;width:100%;max-width:480px;
+  overflow:hidden;animation:modalIn 0.3s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.modal-header{
+  padding:20px 24px;background:var(--navy);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-header h3{font-size:1rem;font-weight:500;color:white;}
+.modal-close{background:none;border:none;color:rgba(255,255,255,0.6);font-size:1.4rem;cursor:pointer;line-height:1;}
+.modal-body{padding:24px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:0.75rem;font-weight:500;color:var(--navy);margin-bottom:6px;}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:4px;
+  font-size:0.82rem;font-family:'Noto Sans KR',sans-serif;color:var(--text);
+  transition:border-color 0.2s;outline:none;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--teal);}
+.form-group textarea{height:100px;resize:none;}
+.form-group .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-note{font-size:0.7rem;color:var(--text-light);font-weight:300;margin-bottom:20px;line-height:1.5;}
+.form-submit{
+  width:100%;padding:14px;background:var(--teal);color:white;
+  border:none;border-radius:4px;font-size:0.88rem;font-weight:500;
+  cursor:pointer;transition:background 0.2s;
+}
+.form-submit:hover{background:#0A5E62}
+
+/* SUCCESS */
+.success-msg{display:none;text-align:center;padding:20px 0;}
+.success-msg .s-icon{font-size:3rem;margin-bottom:12px;}
+.success-msg h4{font-size:1rem;font-weight:500;color:var(--navy);margin-bottom:8px;}
+.success-msg p{font-size:0.82rem;color:var(--text-mid);font-weight:300;line-height:1.6;}
+
+/* LOADING */
+#loading{
+  position:fixed;inset:0;background:white;
+  display:flex;align-items:center;justify-content:center;
+  z-index:999;transition:opacity 0.3s;
+}
+.loading-logo{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;letter-spacing:0.2em;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div id="loading"><div class="loading-logo">MEDIVITA</div></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back"><span class="arrow">←</span> 내과 클리닉 목록</a>
+    <a href="index.html" class="nav-logo">MEDIVITA</a>
+    <a href="#" class="nav-book" onclick="openModal('reserve')">진료 예약</a>
+  </div>
+</nav>
+
+<!-- HERO (JS로 채워짐) -->
+<div class="clinic-hero" id="clinicHero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">홈</a>
+      <span>›</span>
+      <a href="index.html#internal-section">내과</a>
+      <span>›</span>
+      <span class="current" id="breadcrumbCurrent"></span>
+    </div>
+    <span class="clinic-tag" id="clinicTag"></span>
+    <h1 id="clinicTitle"></h1>
+    <p class="subtitle" id="clinicSubtitle"></p>
+  </div>
+  <div class="hero-badge" id="heroBadge"></div>
+</div>
+
+<!-- MAIN -->
+<div class="clinic-main">
+  <div class="clinic-body" id="clinicBody"></div>
+  <div class="clinic-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">
+        <span class="s-icon">📋</span>
+        <div>
+          <h3>진료 안내</h3>
+          <p>예약 후 방문을 권장합니다</p>
+        </div>
+      </div>
+      <div class="sidebar-body">
+        <div class="sidebar-info-row"><span class="si-label">진료시간</span><span class="si-value">평일 08:30 — 17:30<br>토요일 08:30 — 12:30</span></div>
+        <div class="sidebar-info-row"><span class="si-label">점심시간</span><span class="si-value">12:30 — 13:30</span></div>
+        <div class="sidebar-info-row"><span class="si-label">전화</span><span class="si-value">02-XXXX-XXXX</span></div>
+        <div class="sidebar-info-row"><span class="si-label">위치</span><span class="si-value">강남구 청담동<br>MEDIVITA 빌딩 3층</span></div>
+      </div>
+      <div class="sidebar-btns">
+        <button class="btn-reserve" onclick="openModal('reserve')">🗓 예약하기</button>
+        <button class="btn-inquiry" onclick="openModal('inquiry')">💬 문의하기</button>
+        <a href="tel:02-XXXX-XXXX" class="btn-call">📞 02-XXXX-XXXX</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RELATED -->
+<div style="max-width:1100px;margin:0 auto;padding:0 24px 80px;">
+  <div class="related-clinics">
+    <h3>다른 내과 클리닉</h3>
+    <div class="related-grid" id="relatedGrid"></div>
+  </div>
+</div>
+
+<!-- 예약 모달 -->
+<div class="modal-overlay" id="reserveModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🗓 진료 예약</h3>
+      <button class="modal-close" onclick="closeModal('reserve')">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="reserveForm">
+        <div class="form-group">
+          <label>클리닉</label>
+          <input type="text" id="reserveClinic" readonly style="background:var(--off-white);">
+        </div>
+        <div class="form-group">
+          <div class="form-row">
+            <div><label>성함 *</label><input type="text" placeholder="홍길동"></div>
+            <div><label>연락처 *</label><input type="tel" placeholder="010-0000-0000"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-row">
+            <div><label>희망 날짜</label><input type="date"></div>
+            <div><label>희망 시간</label>
+              <select>
+                <option>오전 9시</option><option>오전 10시</option><option>오전 11시</option>
+                <option>오후 1시</option><option>오후 2시</option><option>오후 3시</option>
+                <option>오후 4시</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>증상 / 요청사항</label>
+          <textarea placeholder="간단히 증상이나 요청 사항을 적어주세요."></textarea>
+        </div>
+        <p class="form-note">* 접수 후 담당자가 확인 전화를 드립니다. 예약 확정은 전화 확인 후 완료됩니다.</p>
+        <button class="form-submit" onclick="submitForm('reserve')">예약 신청하기</button>
+      </div>
+      <div class="success-msg" id="reserveSuccess">
+        <div class="s-icon">✅</div>
+        <h4>예약 신청이 완료되었습니다!</h4>
+        <p>빠른 시간 내에 담당자가 확인 전화를 드리겠습니다.<br>문의사항은 02-XXXX-XXXX로 연락 주세요.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 문의 모달 -->
+<div class="modal-overlay" id="inquiryModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>💬 온라인 문의</h3>
+      <button class="modal-close" onclick="closeModal('inquiry')">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="inquiryForm">
+        <div class="form-group">
+          <label>문의 클리닉</label>
+          <input type="text" id="inquiryClinic" readonly style="background:var(--off-white);">
+        </div>
+        <div class="form-group">
+          <div class="form-row">
+            <div><label>성함 *</label><input type="text" placeholder="홍길동"></div>
+            <div><label>연락처 *</label><input type="tel" placeholder="010-0000-0000"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>문의 유형</label>
+          <select>
+            <option>진료 관련 문의</option>
+            <option>비용 문의</option>
+            <option>검사 관련 문의</option>
+            <option>기타</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>문의 내용 *</label>
+          <textarea placeholder="궁금하신 내용을 자유롭게 적어주세요."></textarea>
+        </div>
+        <p class="form-note">* 문의 내용은 영업일 기준 1~2일 내에 답변드립니다.</p>
+        <button class="form-submit" onclick="submitForm('inquiry')">문의 접수하기</button>
+      </div>
+      <div class="success-msg" id="inquirySuccess">
+        <div class="s-icon">📨</div>
+        <h4>문의가 접수되었습니다!</h4>
+        <p>영업일 기준 1~2일 내로 답변 드리겠습니다.<br>긴급 문의는 02-XXXX-XXXX로 연락 주세요.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── 클리닉 데이터 ───
+const clinics = {
+  rheumatoid: {
+    tag: 'Specialty Center · A',
+    title: '류마티스 · <em>통증 센터</em>',
+    titlePlain: '류마티스·통증 센터',
+    subtitle: '관절 통증부터 면역계 이상까지, 근본적인 원인을 치료합니다.',
+    icon: '🦴',
+    bgGradient: 'linear-gradient(135deg, #0A1628 0%, #1a3a2a 60%, #0D7377 100%)',
+    body: `
+      <div class="body-section">
+        <h2>센터 소개</h2>
+        <p>류마티스 및 통증 센터는 단순 진통제 처방을 넘어, <strong>면역계의 근본적인 이상을 찾아 치료하는 전문 센터</strong>입니다. 류마티스 관절염·루푸스·베체트병 등 자가면역 질환은 초기에 발견하고 정확히 진단받는 것이 치료의 핵심입니다.</p>
+        <p>많은 환자분들이 수년간 단순 관절염으로 오인하여 적절한 치료 시기를 놓치는 경우가 있습니다. 저희 류마티스 전문의는 정밀 면역 혈액검사와 관절 초음파를 통해 조기 진단과 개인 맞춤 치료 계획을 수립합니다.</p>
+        <p>또한 통풍·섬유근통·신경인성 통증 등 다양한 만성통증 질환에 대해 신경주사치료와 영양치료를 병행하여, 약물 의존도를 낮추고 장기적인 통증 관리를 돕습니다.</p>
+      </div>
+      <div class="body-section">
+        <h2>이런 분께 권합니다</h2>
+        <div class="target-grid">
+          <span class="target-chip">류마티스 관절염 의심</span>
+          <span class="target-chip">강직성 척추염</span>
+          <span class="target-chip">통풍 · 요산 수치 이상</span>
+          <span class="target-chip">루푸스 · 베체트병</span>
+          <span class="target-chip">섬유근통</span>
+          <span class="target-chip">원인 모를 관절 부종</span>
+          <span class="target-chip">손가락 변형 · 조조강직</span>
+          <span class="target-chip">만성 근골격 통증</span>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 · 치료 항목</h2>
+        <div class="treatment-list">
+          <div class="treatment-item"><span class="t-icon">🔬</span><div class="t-text">정밀 면역 혈액검사<small>RF, Anti-CCP, ANA, ANCA 등</small></div></div>
+          <div class="treatment-item"><span class="t-icon">📡</span><div class="t-text">관절 초음파 검사<small>활막염·건초염 실시간 확인</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💉</span><div class="t-text">신경주사 치료<small>통증 부위 정밀 타깃 주사</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🌿</span><div class="t-text">영양·항염 치료<small>오메가3, 비타민D, 항산화 수액</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💊</span><div class="t-text">항류마티스 약물치료<small>DMARDs, 생물학적 제제 관리</small></div></div>
+          <div class="treatment-item"><span class="t-icon">📊</span><div class="t-text">경과 모니터링<small>정기 혈액검사 및 질환활성도 평가</small></div></div>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 프로세스</h2>
+        <div class="process-steps">
+          <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>초진 상담 및 병력 청취</h4><p>증상의 시작 시점, 양상, 가족력 등을 꼼꼼히 확인합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>정밀 면역검사 · 영상검사</h4><p>혈액 내 자가항체 검사와 관절 초음파를 시행합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>진단 및 치료 계획 수립</h4><p>검사 결과를 바탕으로 개인 맞춤 치료 계획을 안내합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>치료 및 정기 경과 관찰</h4><p>약물·주사·영양치료를 병행하며 3~6개월 단위 경과를 관찰합니다.</p></div></div>
+        </div>
+      </div>
+      <div class="notice-box">
+        <h4>⚠ 내원 전 참고사항</h4>
+        <ul>
+          <li>복용 중인 약물 목록(사진 또는 실물)을 지참해 주세요.</li>
+          <li>이전 검사 결과지나 영상 자료가 있으면 함께 가져오시면 도움이 됩니다.</li>
+          <li>공복 혈액검사가 필요할 수 있어, 오전 예약 시 공복 상태로 내원을 권장합니다.</li>
+        </ul>
+      </div>
+    `
+  },
+
+  autonomic: {
+    tag: 'Specialty Center · A',
+    title: '자율신경 <em>센터</em>',
+    titlePlain: '자율신경 센터',
+    subtitle: '검사상 이상을 찾지 못한 두근거림과 만성피로, 신경계의 리듬을 회복합니다.',
+    icon: '🧠',
+    bgGradient: 'linear-gradient(135deg, #1a0a2a 0%, #2d1545 60%, #5B2D8E 100%)',
+    body: `
+      <div class="body-section">
+        <h2>센터 소개</h2>
+        <p>자율신경 센터는 <strong>"이상이 없다"는 검사 결과에도 불구하고 지속되는 피로감·두근거림·어지러움·수면장애·브레인포그</strong> 등의 증상을 전문으로 다룹니다.</p>
+        <p>자율신경계는 심장박동, 호흡, 소화, 체온조절 등 우리 몸의 무의식적인 기능을 조절합니다. 스트레스·과로·잘못된 생활 습관 등이 누적되면 자율신경의 균형이 무너지고, 다양한 신체 증상이 나타납니다. 하지만 일반적인 혈액검사·심전도 검사로는 이 불균형을 포착하기 어렵습니다.</p>
+        <p>저희는 심박변이도(HRV) 검사와 유기산 대사 검사를 통해 자율신경과 미토콘드리아 기능을 정량적으로 평가하고, 개인별 맞춤 수액치료·신경주사치료·생활습관 교정 프로그램을 제공합니다.</p>
+      </div>
+      <div class="body-section">
+        <h2>이런 분께 권합니다</h2>
+        <div class="target-grid">
+          <span class="target-chip">원인 모를 만성피로</span>
+          <span class="target-chip">이유 없는 두근거림</span>
+          <span class="target-chip">브레인 포그 · 집중력 저하</span>
+          <span class="target-chip">기립성 어지러움</span>
+          <span class="target-chip">만성 두통</span>
+          <span class="target-chip">불안 · 불면</span>
+          <span class="target-chip">자율신경 실조증</span>
+          <span class="target-chip">번아웃 증후군</span>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 · 치료 항목</h2>
+        <div class="treatment-list">
+          <div class="treatment-item"><span class="t-icon">💓</span><div class="t-text">자율신경(HRV) 검사<small>교감/부교감 신경 균형 평가</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🧪</span><div class="t-text">유기산 대사 검사<small>미토콘드리아·장내 환경 분석</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💉</span><div class="t-text">신경주사 치료<small>자율신경 안정화 주사</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🌊</span><div class="t-text">맞춤 수액 치료<small>Neuro-Vital Recovery 수액</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🧬</span><div class="t-text">영양 · 호르몬 분석<small>부신·갑상선 기능 연계 평가</small></div></div>
+          <div class="treatment-item"><span class="t-icon">📱</span><div class="t-text">생활습관 교정 프로그램<small>수면·식단·스트레스 관리</small></div></div>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 프로세스</h2>
+        <div class="process-steps">
+          <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>증상 및 생활 패턴 파악</h4><p>증상의 시작 시점, 스트레스 요인, 수면 패턴 등을 상세히 파악합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>HRV 검사 · 유기산 대사 검사</h4><p>비침습적 검사로 자율신경 균형과 대사 상태를 객관적으로 평가합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>원인별 맞춤 치료 계획</h4><p>검사 결과에 따라 수액·주사·영양치료를 조합한 치료 계획을 수립합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>경과 관찰 및 생활습관 코칭</h4><p>정기적인 경과 확인과 함께 지속 가능한 생활습관 개선을 안내합니다.</p></div></div>
+        </div>
+      </div>
+      <div class="notice-box">
+        <h4>⚠ 내원 전 참고사항</h4>
+        <ul>
+          <li>HRV 검사는 카페인 섭취 후 2시간 이내, 격렬한 운동 직후에는 정확도가 떨어질 수 있습니다.</li>
+          <li>복용 중인 약물(특히 수면제·항불안제·갑상선약)을 사전에 알려주세요.</li>
+          <li>유기산 검사는 첫 아침 소변 샘플이 필요합니다. 예약 시 사전 안내드립니다.</li>
+        </ul>
+      </div>
+    `
+  },
+
+  iv: {
+    tag: 'Specialty Center · A',
+    title: '프리미엄 수액 · <em>웰빙 클리닉</em>',
+    titlePlain: '프리미엄 수액·웰빙 클리닉',
+    subtitle: '나에게 필요한 에너지를 의학적으로 분석하여 채웁니다.',
+    icon: '💉',
+    bgGradient: 'linear-gradient(135deg, #1a1000 0%, #3a2800 60%, #B8935A 100%)',
+    body: `
+      <div class="body-section">
+        <h2>클리닉 소개</h2>
+        <p>프리미엄 수액 클리닉은 단순한 피로 회복 주사를 넘어, <strong>정밀 혈액검사와 유전체 분석을 기반으로 개인에게 부족한 영양소를 의학적으로 처방하는 맞춤형 웰빙 프로그램</strong>입니다.</p>
+        <p>바쁜 현대인의 만성피로, 면역 저하, 갱년기 증상, 안티에이징 관리 등 다양한 목적에 맞춰 5가지 시그니처 수액 프로그램을 제공합니다. 특히 Cell Balance Premium과 Neuro-Vital Recovery Premium은 줄기세포 및 신경 회복 성분을 포함한 최고 등급 프로그램입니다.</p>
+        <p>또한 고압산소치료와 정밀 유전체 검진을 결합하여, 단순 증상 완화가 아닌 세포 수준의 근본적인 건강 개선을 목표로 합니다.</p>
+      </div>
+      <div class="body-section">
+        <h2>이런 분께 권합니다</h2>
+        <div class="target-grid">
+          <span class="target-chip">만성 피로 · 무기력</span>
+          <span class="target-chip">잦은 감기 · 면역 저하</span>
+          <span class="target-chip">갱년기 증상</span>
+          <span class="target-chip">피부 미백 · 안티에이징</span>
+          <span class="target-chip">숙취 · 과음 다음 날</span>
+          <span class="target-chip">집중력 저하</span>
+          <span class="target-chip">운동 후 회복</span>
+          <span class="target-chip">세포 노화 관리</span>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>시그니처 수액 프로그램</h2>
+        <div class="treatment-list">
+          <div class="treatment-item"><span class="t-icon">🔋</span><div class="t-text">Longevity Restore<small>세포 재생 · 항산화 · 에너지 충전</small></div></div>
+          <div class="treatment-item"><span class="t-icon">⚡</span><div class="t-text">Metabolic Boost<small>대사 활성 · 체지방 연소 보조</small></div></div>
+          <div class="treatment-item"><span class="t-icon">✨</span><div class="t-text">White Antioxidant<small>미백 · 글루타치온 · 항산화</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🧠</span><div class="t-text">Neuro-Vital Recovery <b>Premium</b><small>신경 회복 · 집중력 · 뇌 피로 해소</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🧬</span><div class="t-text">Cell Balance <b>Premium</b><small>줄기세포 · 세포 균형 · 노화 방지</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🌬️</span><div class="t-text">고압산소치료(HBO)<small>세포 산소 공급 · 회복 가속화</small></div></div>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 프로세스</h2>
+        <div class="process-steps">
+          <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>정밀 혈액 · 영양 분석</h4><p>현재 영양 상태와 결핍 성분을 혈액검사로 정량 분석합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>맞춤 프로그램 처방</h4><p>검사 결과와 목적(피로·면역·미백·노화 등)에 따라 최적 프로그램을 처방합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>프리미엄 수액 시행</h4><p>독립 프라이빗 룸에서 편안하게 수액을 맞으실 수 있습니다. (40~90분)</p></div></div>
+          <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>정기 케어 플랜</h4><p>1회 방문이 아닌, 주기적인 케어 플랜으로 지속적인 건강 관리를 지원합니다.</p></div></div>
+        </div>
+      </div>
+      <div class="notice-box">
+        <h4>⚠ 내원 전 참고사항</h4>
+        <ul>
+          <li>수액 시행 전 간단한 식사를 권장합니다(공복 시 어지러움 가능).</li>
+          <li>G6PD 결핍증이 있으신 분은 고용량 비타민C 수액 전 반드시 알려주세요.</li>
+          <li>임신 중이거나 임신 가능성이 있는 경우 사전에 의료진에게 알려주세요.</li>
+        </ul>
+      </div>
+    `
+  },
+
+  thyroid: {
+    tag: 'Specialized Clinic · B',
+    title: '갑상선 · <em>내분비 클리닉</em>',
+    titlePlain: '갑상선·내분비 클리닉',
+    subtitle: '여성에게 흔한 갑상선 질환, 정밀 초음파로 섬세하게 관리합니다.',
+    icon: '🫀',
+    bgGradient: 'linear-gradient(135deg, #0d1f0f 0%, #1a3520 60%, #1E6B3C 100%)',
+    body: `
+      <div class="body-section">
+        <h2>클리닉 소개</h2>
+        <p>갑상선·내분비 클리닉은 <strong>갑상선 기능 이상 및 결절의 조기 발견과 정밀 관리</strong>를 전문으로 합니다. 갑상선 질환은 여성에게 약 5~8배 더 흔하게 발생하며, 피로·체중 변화·두근거림·탈모 등 일상의 증상으로 나타나 쉽게 간과됩니다.</p>
+        <p>저희는 갑상선 기능 혈액검사(TSH, Free T4, T3)와 함께 갑상선 전문 초음파를 통해 결절의 크기·모양·혈류를 정밀하게 평가합니다. 양성 결절부터 암 의심 결절까지, 단계별 맞춤 추적 관리 계획을 제공합니다.</p>
+        <p>갑상선 기능 저하증으로 인한 무기력함, 기능 항진증으로 인한 불안·두근거림 등 증상을 겪고 계시다면, 단순 영양제나 건강기능식품이 아닌 의학적 진단과 치료를 받아보시길 권장합니다.</p>
+      </div>
+      <div class="body-section">
+        <h2>이런 분께 권합니다</h2>
+        <div class="target-grid">
+          <span class="target-chip">원인 모를 피로 · 무기력</span>
+          <span class="target-chip">체중 이상 변화</span>
+          <span class="target-chip">두근거림 · 손 떨림</span>
+          <span class="target-chip">탈모 · 피부 건조</span>
+          <span class="target-chip">목의 이물감</span>
+          <span class="target-chip">갑상선 결절 진단</span>
+          <span class="target-chip">갑상선 가족력</span>
+          <span class="target-chip">여성 호르몬 불균형</span>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 · 검사 항목</h2>
+        <div class="treatment-list">
+          <div class="treatment-item"><span class="t-icon">🩸</span><div class="t-text">갑상선 기능 혈액검사<small>TSH, Free T4, T3, 항체검사</small></div></div>
+          <div class="treatment-item"><span class="t-icon">📡</span><div class="t-text">갑상선 정밀 초음파<small>결절 크기·모양·혈류 평가</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💊</span><div class="t-text">약물 치료 및 조절<small>갑상선 호르몬제·항갑상선제</small></div></div>
+          <div class="treatment-item"><span class="t-icon">📋</span><div class="t-text">정기 추적 관리<small>결절 변화 모니터링</small></div></div>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 프로세스</h2>
+        <div class="process-steps">
+          <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>증상 상담 및 혈액검사</h4><p>갑상선 기능 관련 혈액검사를 시행하고 결과를 분석합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>갑상선 초음파</h4><p>전문의가 직접 초음파를 시행하여 결절 유무와 특성을 확인합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>진단 및 치료 계획</h4><p>기능 이상·결절 등 결과에 따라 치료 또는 정기 관찰 계획을 수립합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>정기 추적 검사</h4><p>6개월~1년 단위로 혈액검사 및 초음파 추적 검사를 시행합니다.</p></div></div>
+        </div>
+      </div>
+    `
+  },
+
+  obesity: {
+    tag: 'Specialized Clinic · B',
+    title: '비만 · <em>메디컬 다이어트</em>',
+    titlePlain: '비만·메디컬 다이어트',
+    subtitle: '단순 감량이 아닌, 살이 찌는 원인을 의학적으로 해결합니다.',
+    icon: '⚖️',
+    bgGradient: 'linear-gradient(135deg, #1a0e00 0%, #3a2000 60%, #B8700A 100%)',
+    body: `
+      <div class="body-section">
+        <h2>클리닉 소개</h2>
+        <p>비만·메디컬 다이어트 클리닉은 <strong>다이어트의 실패 원인을 의학적으로 분석하고, 지속 가능한 체중 감량 솔루션</strong>을 제공합니다. 단순한 식욕 억제제나 일시적인 감량이 아닌, 호르몬·대사·장내 환경 등 비만의 근본 원인을 찾아 치료합니다.</p>
+        <p>최근 획기적인 체중 감량 효과로 주목받는 GLP-1 계열 주사제(위고비·삭센다·마운자로)를 전문의 처방으로 안전하게 제공하며, 단순 처방에 그치지 않고 식단·운동·생활습관 코칭을 병행하여 요요 없는 장기적인 체중 유지를 목표로 합니다.</p>
+        <p>갑상선 기능 저하, 인슐린 저항성, 쿠싱증후군 등 비만을 유발하는 의학적 원인을 먼저 검토하는 것이 저희 클리닉의 차별점입니다.</p>
+      </div>
+      <div class="body-section">
+        <h2>이런 분께 권합니다</h2>
+        <div class="target-grid">
+          <span class="target-chip">여러 번 다이어트 실패</span>
+          <span class="target-chip">요요 반복</span>
+          <span class="target-chip">복부 비만</span>
+          <span class="target-chip">인슐린 저항성</span>
+          <span class="target-chip">GLP-1 주사 관심</span>
+          <span class="target-chip">대사증후군</span>
+          <span class="target-chip">폭식·야식 습관</span>
+          <span class="target-chip">갱년기 체중 증가</span>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>치료 프로그램</h2>
+        <div class="treatment-list">
+          <div class="treatment-item"><span class="t-icon">💉</span><div class="t-text">위고비(Wegovy)<small>주 1회 피하주사 · 식욕 조절</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💉</span><div class="t-text">삭센다(Saxenda)<small>매일 피하주사 · GLP-1 계열</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💉</span><div class="t-text">마운자로(Mounjaro)<small>GIP·GLP-1 이중 작용 · 강력 감량</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🥗</span><div class="t-text">식단 프로그램<small>영양사 연계 맞춤 식단 설계</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💧</span><div class="t-text">다이어트 수액<small>대사 촉진·지방 분해 지원</small></div></div>
+          <div class="treatment-item"><span class="t-icon">📊</span><div class="t-text">체성분 정기 분석<small>근육량·체지방 변화 추적</small></div></div>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 프로세스</h2>
+        <div class="process-steps">
+          <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>비만 원인 분석 검사</h4><p>혈액검사(인슐린·갑상선·호르몬)와 체성분 검사로 비만 원인을 파악합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>맞춤 치료 방향 설정</h4><p>검사 결과와 BMI·생활 패턴에 따라 최적의 치료 조합을 처방합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>약물 치료 + 생활습관 코칭</h4><p>GLP-1 주사와 함께 식단·운동 계획을 병행합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>요요 방지 유지 관리</h4><p>목표 체중 도달 후에도 지속적인 유지 프로그램을 제공합니다.</p></div></div>
+        </div>
+      </div>
+    `
+  },
+
+  allergy: {
+    tag: 'Specialized Clinic · B',
+    title: '알레르기 · <em>호흡기 클리닉</em>',
+    titlePlain: '알레르기·호흡기 클리닉',
+    subtitle: '환절기마다 반복되는 비염, 두드러기, 기침을 근본적으로 케어합니다.',
+    icon: '🌸',
+    bgGradient: 'linear-gradient(135deg, #1a0a1a 0%, #3a1535 60%, #8B3A8B 100%)',
+    body: `
+      <div class="body-section">
+        <h2>클리닉 소개</h2>
+        <p>알레르기·호흡기 클리닉은 매년 반복되는 알레르기 비염·두드러기·기관지 천식·만성 기침 등의 증상을 <strong>원인 알레르겐 규명부터 장기적인 면역치료까지 체계적으로 관리</strong>합니다.</p>
+        <p>단순 항히스타민제 처방을 반복하는 것이 아닌, MAST(다중 알레르기 항원) 정밀 혈액검사를 통해 어떤 항원에 반응하는지 정확히 파악하고, 설하면역치료(혀 아래 면역 훈련)로 알레르기 반응 자체를 장기적으로 낮추는 치료를 진행합니다.</p>
+        <p>만성 두드러기의 경우 음식·약물·스트레스 등 유발 요인을 함께 분석하며, 천식·COPD 등 호흡기 질환은 폐기능 검사를 통해 중증도를 평가하고 흡입제·스테로이드 등 적절한 치료를 계획합니다.</p>
+      </div>
+      <div class="body-section">
+        <h2>이런 분께 권합니다</h2>
+        <div class="target-grid">
+          <span class="target-chip">알레르기 비염</span>
+          <span class="target-chip">만성 두드러기</span>
+          <span class="target-chip">천식 · 호흡곤란</span>
+          <span class="target-chip">COPD</span>
+          <span class="target-chip">원인 모를 반복 기침</span>
+          <span class="target-chip">음식 알레르기</span>
+          <span class="target-chip">아토피성 피부염</span>
+          <span class="target-chip">꽃가루 알레르기</span>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 · 치료 항목</h2>
+        <div class="treatment-list">
+          <div class="treatment-item"><span class="t-icon">🔬</span><div class="t-text">MAST 정밀 알레르기 검사<small>100여 가지 항원 동시 검사</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💨</span><div class="t-text">폐기능 검사(PFT)<small>천식·COPD 중증도 평가</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💧</span><div class="t-text">설하면역치료(SLIT)<small>알레르기 반응 장기 감소</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💉</span><div class="t-text">신경주사 치료<small>알레르기 반응 조절</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🌬️</span><div class="t-text">흡입 기관지확장제<small>천식·COPD 치료</small></div></div>
+          <div class="treatment-item"><span class="t-icon">📋</span><div class="t-text">알레르겐 회피 교육<small>생활 속 유발 요인 관리</small></div></div>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 프로세스</h2>
+        <div class="process-steps">
+          <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>증상 패턴 및 유발 요인 파악</h4><p>증상이 언제, 어디서, 어떤 상황에서 나타나는지 상세히 확인합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>MAST 알레르기 정밀 검사</h4><p>혈액검사로 원인 알레르겐을 특정합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>치료 계획 및 처방</h4><p>설하면역치료·약물치료·주사치료 등 개인 맞춤 치료를 시작합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>장기 면역 관리</h4><p>설하면역치료는 3~5년 장기 치료로 알레르기 반응을 근본적으로 낮춥니다.</p></div></div>
+        </div>
+      </div>
+    `
+  },
+
+  endoscopy: {
+    tag: 'Basic Medical Care · C',
+    title: '소화기 · <em>내시경 센터</em>',
+    titlePlain: '소화기·내시경 센터',
+    subtitle: '편안한 수면 내시경과 꼼꼼한 용종 제거, 소화기 건강의 시작입니다.',
+    icon: '🔬',
+    bgGradient: 'linear-gradient(135deg, #0d1f0f 0%, #163320 60%, #1E6B3C 100%)',
+    body: `
+      <div class="body-section">
+        <h2>센터 소개</h2>
+        <p>소화기·내시경 센터는 <strong>위장관 질환의 정확한 진단과 치료를 한 곳에서 해결하는 원스톱 소화기 전문 센터</strong>입니다. 최신 고해상도 내시경 장비를 사용하여, 수면 상태에서 편안하고 빠르게 검사를 마칠 수 있습니다.</p>
+        <p>위내시경 검사 중 발견되는 헬리코박터 파일로리균은 즉시 검사하여 위암·위궤양 예방에 적극적으로 대처합니다. 대장내시경 검사 중 발견된 용종은 당일 절제술로 즉시 처리하여 대장암을 예방합니다.</p>
+        <p>국가건강검진 대상자(만 40·50세 위암, 만 45~80세 대장암 검진)도 편안하게 수검하실 수 있으며, 검진 결과에 따른 사후 관리까지 연속적으로 제공합니다.</p>
+      </div>
+      <div class="body-section">
+        <h2>이런 분께 권합니다</h2>
+        <div class="target-grid">
+          <span class="target-chip">위·대장 내시경 검진</span>
+          <span class="target-chip">소화불량 · 속쓰림</span>
+          <span class="target-chip">혈변 · 복통</span>
+          <span class="target-chip">과민대장증후군</span>
+          <span class="target-chip">국가건강검진</span>
+          <span class="target-chip">용종 제거 후 추적</span>
+          <span class="target-chip">위암·대장암 가족력</span>
+          <span class="target-chip">헬리코박터 치료</span>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 · 검사 항목</h2>
+        <div class="treatment-list">
+          <div class="treatment-item"><span class="t-icon">🔍</span><div class="t-text">수면 위내시경<small>고해상도 · 당일 결과 확인</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🔍</span><div class="t-text">수면 대장내시경<small>용종 발견 즉시 절제</small></div></div>
+          <div class="treatment-item"><span class="t-icon">✂️</span><div class="t-text">용종 절제술(EMR/ESD)<small>대장암 예방 핵심 시술</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🦠</span><div class="t-text">헬리코박터 검사·제균<small>위암 예방 핵심 관리</small></div></div>
+          <div class="treatment-item"><span class="t-icon">📋</span><div class="t-text">국가건강검진<small>위암·대장암 공단 검진</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💊</span><div class="t-text">소화기 질환 약물치료<small>위염·역류·IBS 관리</small></div></div>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 프로세스</h2>
+        <div class="process-steps">
+          <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>검사 전 준비 안내</h4><p>검사 전날 식이 제한 및 장 정결제 복용법을 상세히 안내드립니다.</p></div></div>
+          <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>수면 유도 후 내시경 검사</h4><p>안전한 수면 유도제를 투여 후 편안한 상태에서 검사를 진행합니다. (10~20분)</p></div></div>
+          <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>용종 발견 시 즉시 절제</h4><p>발견 즉시 절제하여 재방문 없이 처리합니다. 조직검사 결과는 1주일 내 확인.</p></div></div>
+          <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>결과 상담 및 추적 계획</h4><p>검사 결과에 따라 약물 치료 또는 다음 내시경 추적 일정을 안내합니다.</p></div></div>
+        </div>
+      </div>
+      <div class="notice-box">
+        <h4>⚠ 내원 전 참고사항</h4>
+        <ul>
+          <li>수면 내시경 당일에는 차량 운전이 불가합니다. 보호자 동반 또는 대중교통 이용을 권장합니다.</li>
+          <li>검사 전날 저녁 9시 이후 금식, 당일 아침 물도 금지입니다.</li>
+          <li>대장내시경은 전날부터 장 정결제 복용이 필요합니다. 예약 시 상세 안내드립니다.</li>
+        </ul>
+      </div>
+    `
+  },
+
+  chronic: {
+    tag: 'Basic Medical Care · C',
+    title: '만성질환 · <em>성인병 클리닉</em>',
+    titlePlain: '만성질환·성인병 클리닉',
+    subtitle: '고혈압, 당뇨, 고지혈증. 평생 주치의가 합병증까지 꼼꼼하게 관리합니다.',
+    icon: '❤️‍🩹',
+    bgGradient: 'linear-gradient(135deg, #0A1628 0%, #132240 60%, #2E5FA3 100%)',
+    body: `
+      <div class="body-section">
+        <h2>클리닉 소개</h2>
+        <p>만성질환·성인병 클리닉은 고혈압·당뇨·고지혈증 등 <strong>평생 관리가 필요한 만성질환을 주치의 개념으로 체계적으로 관리</strong>합니다. 단순히 약을 처방하는 것을 넘어, 합병증 예방과 생활습관 교정까지 포함한 통합 관리를 제공합니다.</p>
+        <p>고혈압의 경우 심장·경동맥 초음파를 통해 혈관 건강과 심장 기능을 함께 평가하고, 당뇨의 경우 HbA1c·인슐린 저항성 검사와 함께 신장·눈·신경 합병증을 조기에 발견합니다. 고지혈증은 단순 LDL 수치가 아닌, 동맥경화지수와 염증 마커를 종합 평가합니다.</p>
+        <p>또한 식단·운동·금연·음주 등 생활습관 전반에 대한 맞춤 교정 계획을 제공하여, 약물 의존도를 줄이고 장기적인 건강 수명을 늘리는 것을 목표로 합니다.</p>
+      </div>
+      <div class="body-section">
+        <h2>이런 분께 권합니다</h2>
+        <div class="target-grid">
+          <span class="target-chip">고혈압 진단·관리</span>
+          <span class="target-chip">당뇨 진단·관리</span>
+          <span class="target-chip">고지혈증</span>
+          <span class="target-chip">대사증후군</span>
+          <span class="target-chip">만성질환 약물 조절</span>
+          <span class="target-chip">합병증 예방</span>
+          <span class="target-chip">가족력 있는 성인</span>
+          <span class="target-chip">건강검진 이상 소견</span>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 · 검사 항목</h2>
+        <div class="treatment-list">
+          <div class="treatment-item"><span class="t-icon">🩸</span><div class="t-text">정밀 혈액·소변 검사<small>혈당·HbA1c·지질·신장 기능</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🫀</span><div class="t-text">심장 초음파<small>고혈압 합병증 심장 평가</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🩺</span><div class="t-text">경동맥 초음파<small>동맥경화·뇌졸중 위험 평가</small></div></div>
+          <div class="treatment-item"><span class="t-icon">💊</span><div class="t-text">약물 조절 및 관리<small>혈압·혈당·지질 약물 최적화</small></div></div>
+          <div class="treatment-item"><span class="t-icon">🥗</span><div class="t-text">생활습관 교정 프로그램<small>식이·운동·금연 맞춤 코칭</small></div></div>
+          <div class="treatment-item"><span class="t-icon">📊</span><div class="t-text">정기 경과 관찰<small>3개월 단위 혈액검사 추적</small></div></div>
+        </div>
+      </div>
+      <div class="body-section">
+        <h2>진료 프로세스</h2>
+        <div class="process-steps">
+          <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>기초 검사 및 현황 파악</h4><p>혈압·혈당·지질 등 기본 수치와 합병증 위험 인자를 종합 평가합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>초음파 등 합병증 검사</h4><p>심장·경동맥 초음파로 이미 진행된 합병증 여부를 확인합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>약물 처방 및 생활습관 상담</h4><p>개인 상황에 맞는 약물을 처방하고 생활습관 교정 계획을 함께 수립합니다.</p></div></div>
+          <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>3개월 단위 정기 관리</h4><p>혈액검사 결과를 비교하며 약물을 조절하고 합병증을 지속 모니터링합니다.</p></div></div>
+        </div>
+      </div>
+      <div class="notice-box">
+        <h4>⚠ 내원 전 참고사항</h4>
+        <ul>
+          <li>혈액검사(혈당·지질)는 8시간 이상 공복 상태에서 진행하는 것이 정확합니다.</li>
+          <li>현재 복용 중인 고혈압·당뇨 약물 목록을 지참해 주세요.</li>
+          <li>가정혈압 측정 기록이 있다면 함께 가져오시면 약물 조절에 도움이 됩니다.</li>
+        </ul>
+      </div>
+    `
+  }
+};
+
+// 관련 클리닉 (현재 클리닉 제외)
+const relatedInfo = {
+  rheumatoid: { icon:'🦴', name:'류마티스·통증 센터' },
+  autonomic: { icon:'🧠', name:'자율신경 센터' },
+  iv: { icon:'💉', name:'프리미엄 수액·웰빙' },
+  thyroid: { icon:'🫀', name:'갑상선·내분비' },
+  obesity: { icon:'⚖️', name:'비만·메디컬 다이어트' },
+  allergy: { icon:'🌸', name:'알레르기·호흡기' },
+  endoscopy: { icon:'🔬', name:'소화기·내시경' },
+  chronic: { icon:'❤️‍🩹', name:'만성질환·성인병' },
+};
+
+// URL 해시에서 클리닉 ID 추출
+function getClinicId(){
+  const hash = window.location.hash.replace('#','');
+  return clinics[hash] ? hash : 'rheumatoid';
+}
+
+// 페이지 렌더링
+function renderPage(){
+  const id = getClinicId();
+  const c = clinics[id];
+
+  // hero
+  document.getElementById('heroBg').style.background = c.bgGradient;
+  document.getElementById('clinicHero').style.minHeight = '280px';
+  document.getElementById('breadcrumbCurrent').textContent = c.titlePlain;
+  document.getElementById('clinicTag').textContent = c.tag;
+  document.getElementById('clinicTitle').innerHTML = c.title;
+  document.getElementById('clinicSubtitle').textContent = c.subtitle;
+  document.getElementById('heroBadge').innerHTML = `<span style="font-size:3rem">${c.icon}</span>`;
+
+  // body
+  document.getElementById('clinicBody').innerHTML = c.body;
+
+  // 예약 모달 클리닉명
+  document.getElementById('reserveClinic').value = c.titlePlain;
+  document.getElementById('inquiryClinic').value = c.titlePlain;
+
+  // 페이지 타이틀
+  document.title = `${c.titlePlain} — MEDIVITA`;
+
+  // 관련 클리닉 (현재 제외, 4개)
+  const relatedGrid = document.getElementById('relatedGrid');
+  const others = Object.entries(relatedInfo)
+    .filter(([k]) => k !== id)
+    .slice(0, 4);
+  relatedGrid.innerHTML = others.map(([k, v]) =>
+    `<a href="clinic.html#${k}" class="related-card" onclick="setTimeout(()=>renderPage(),50)">
+      <span class="r-icon">${v.icon}</span>
+      <div class="r-name">${v.name}</div>
+      <div class="r-desc">자세히 보기 →</div>
+    </a>`
+  ).join('');
+}
+
+// 모달
+function openModal(type){
+  document.getElementById(type+'Modal').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeModal(type){
+  document.getElementById(type+'Modal').classList.remove('show');
+  document.body.style.overflow='';
+  // 성공 메시지 초기화
+  document.getElementById(type+'Form').style.display='block';
+  document.getElementById(type+'Success').style.display='none';
+}
+function submitForm(type){
+  document.getElementById(type+'Form').style.display='none';
+  document.getElementById(type+'Success').style.display='block';
+}
+document.querySelectorAll('.modal-overlay').forEach(el=>{
+  el.addEventListener('click', e=>{
+    if(e.target===el) closeModal(el.id.replace('Modal',''));
+  });
+});
+
+// 초기화
+window.addEventListener('hashchange', ()=>{ renderPage(); window.scrollTo(0,0); });
+window.addEventListener('load', ()=>{
+  renderPage();
+  setTimeout(()=>{
+    document.getElementById('loading').style.opacity='0';
+    setTimeout(()=>document.getElementById('loading').style.display='none', 300);
+  }, 400);
+});
+</script>
+</body>
+</html>
